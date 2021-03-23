@@ -25,6 +25,7 @@ class SentenceEmbedder:
                     anti1 += 1
                 #for synset in defs:
                     #print(synset.definition())
+                    #print(synset.examples())
             final_embeddings.append(np.append(sentence_embeddings[i], f1/anti1))
             #print(f1/anti1)
 
