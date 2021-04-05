@@ -19,7 +19,7 @@ class SentenceEmbedder:
         sentence_embeddings = self.model.encode(sentences)
         for i in range(len(sentences)):
             f1 = 0
-            anti1 = 0
+            anti1 = 1
             matches = 0
             words = word_tokenize(sentences[i])
             for j in words:
