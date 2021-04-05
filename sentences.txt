@@ -1,6 +1,6 @@
-I ate dinner.
-We had a three-course meal.
-Brad came to dinner with us.
-He loves fish tacos.
-In the end, we all felt like we ate too much.
-We all agreed; it was a magnificent evening.
+I ate dinner.	0
+We had a three-course meal.	0
+Brad came to dinner with us.	0
+He loves fish tacos.	0
+In the end, we all felt like we ate too much.	0
+We all agreed; it was a magnificent evening.	0

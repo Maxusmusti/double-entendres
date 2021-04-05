@@ -6,11 +6,11 @@ from neural import Model
 
 def main():
     with open("sentences.txt", 'r') as sentence_file:
-        sentences = [sentence[:-1] for sentence in sentence_file] 
+        sentences = [sentence.split('\t')[0] for sentence in sentence_file]
     print(sentences)
 
     with open("sentences.txt", 'r') as sentence_file:
-        labels = [sentence[-1] for sentence in sentence_file]
+        labels = [int((sentence.split('\t')[1])[0]) for sentence in sentence_file]
     print(labels)
 
     embedder = SentenceEmbedder()
