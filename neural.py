@@ -45,7 +45,7 @@ class Model:
         self.model.add(tf.keras.layers.Dropout(0.2))
         self.model.add(tf.keras.layers.Dense(1, activation="sigmoid", kernel_initializer='normal'))
 
-        self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+        self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
         self.model.fit(xs_training, ys_training, batch_size=20, epochs=10, verbose=1)
 
         validation_stats = self.model.evaluate(xs_validation, ys_validation)
