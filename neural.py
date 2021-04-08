@@ -47,3 +47,6 @@ class Model:
 
         self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
         self.model.fit(xs_training, ys_training, batch_size=20, epochs=10, verbose=1)
+
+        validation_stats = self.model.evaluate(xs_validation, ys_validation)
+        print(f"Validation accuracy: {validation_stats[1]}")
