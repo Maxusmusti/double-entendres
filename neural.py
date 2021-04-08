@@ -50,3 +50,6 @@ class Model:
 
         validation_stats = self.model.evaluate(xs_validation, ys_validation)
         print(f"Validation accuracy: {validation_stats[1]}")
+
+    def answer(self, test):
+        return self.model(test)
