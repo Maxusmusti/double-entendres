@@ -47,3 +47,6 @@ class Model:
 
         self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
         self.model.fit(xs_training, ys_training, batch_size=20, epochs=10, verbose=1)
+
+    def answer(self, test):
+        return self.model(test)
