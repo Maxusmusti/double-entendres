@@ -43,6 +43,7 @@ class Model:
         self.model.add(tf.keras.layers.Dropout(0.2, input_shape=(x_length,)))
         self.model.add(tf.keras.layers.Dense(200, input_dim=x_length, activation="relu", kernel_initializer='normal'))
         self.model.add(tf.keras.layers.Dropout(0.2))
+        self.model.add(tf.keras.layers.Dense(10))
         self.model.add(tf.keras.layers.Dense(1, activation="sigmoid", kernel_initializer='normal'))
 
         self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
