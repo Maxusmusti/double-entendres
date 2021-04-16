@@ -1,67 +1,85 @@
 import lyricsgenius
+import re
+
+
 token = "NM2L7vKO3vF48dW69gx2sOGiJOHUZI8Y_vbFSzmgdc2GLSKBY8EnUwc1DJNd3vID"
 genius = lyricsgenius.Genius(token)
 
-def populate(name):
-    artist = genius.search_artist(name, max_songs=50, sort="popularity", allow_name_change=True,
-    include_features=True)
-    for song in artist.songs:
 
-        sid = song.id
-        referents = genius.referents(song_id=sid, text_format='plain')
+def addToText(id):
+    referents = genius.referents(song_id=id, text_format='plain')
 
-        file1 = open("double_entendres.txt", "a")
+    pos = open("lyrical_positives.txt", "a")
+    neg = open("lyrical_negatives.txt", "a")
 
-        for ref in referents['referents']:
-                
-                lyric = ref['fragment']
-                annotation = ref['annotations'][0]['body']['plain']
-                votes = ref['annotations'][0]['votes_total']
-                #classification = ref['classification']
+    for ref in referents['referents']:
+            
+            lyric = ref['fragment']
+            lyric = re.sub('\[.*\]', '', lyric)
+            lyric = re.sub('\(.*\)', '', lyric)
+            lyric = re.sub("\n", ';', lyric)
 
-                if "double entendre" in annotation and votes > 0:
+            annotation = ref['annotations'][0]['body']['plain']
+            votes = ref['annotations'][0]['votes_total']
 
-                    file1.write(lyric + "\n\n")
+            if lyric == "" or lyric == " ":
+                continue
+
+            if "double entendre" in annotation and votes > 0:
+                pos.write(lyric + "\t 1 \n")
+
+            elif "double entendre" not in annotation:
+                neg.write(lyric + "\t 0 \n")
                     
-                    print("SONG TITLE:\n")
-                    print(song.title)
-                    print("")
-                    print("LYRICS: ")
-                    print(lyric)
-                    print("\nANNOTATION: ")
-                    print(annotation)
-                    print("\n----\n")
-                
+    pos.close()
+    neg.close()
+
+def generateInfo():
+    page = 1
+    while page:
+        data = genius.tag('rap', page=page)
+
+        file1 = open("BIGCOMMS.txt", "a")
+        
+        for hit in data['hits']:
+            song_title = hit['title']
+            main_artist = hit['artists'][0] #usually length is 1 but just in case, grab first
+            file1.write(song_title + ";;" + main_artist + "\n")
         file1.close()
-                
-potential_artists = []
+        print("page " + str(page) + " added")
+        page = data['next_page']
+        
+def generateSentences():
+    with open('info.txt', 'r') as file:
+        data = file.read()
 
-artist = potential_artists[0]
-while True:
-    try:
-        populate(artist)
-        break
-    except:
-        pass
+    text = data.split('\n')
 
+    for line in text:
+        info = line.split(';')
+        title = info[0]
+        name = info[1]
+
+        song = genius.search_song(title=title, artist=name)
+
+        if song is None:
+            continue
+        
+        addToText(song.id)
+
+#generateSentences()
 
 """
-import pprint
-test = genius.referents(song_id=133672, text_format='plain')
+with open('lyrical_negatives.txt', 'r') as file:
+    data = file.read()
 
-for y in test['referents']:
-    print("LYRICS: ")
-    print(y['fragment'])
-    print("\nANNOTATION: ")
-    print(y['annotations'][0]['body']['plain'])
-    print("\nVOTES: ")
-    print(y['annotations'][0]['votes_total'])
-    print("\nCLASSIFICATION: ")
-    print(y['classification'])
-    print("\n----\n")
+text = data.split('\n')
 
-    #pp = pprint.PrettyPrinter(indent=4)
-    #pp.pprint(y)
-    #break
+file1 = open("lyrical_negatives_new.txt", "w")
+
+for line in text:
+    line = re.sub(';;', ';', line)
+    file1.write(line + "\n")
+    
+file1.close()
 """
-
