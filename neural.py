@@ -47,10 +47,13 @@ class Model:
         self.model.add(tf.keras.layers.Dense(1, activation="sigmoid", kernel_initializer='normal'))
 
         self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
-        self.model.fit(xs_training, ys_training, batch_size=20, epochs=10, verbose=1)
+        #self.model.fit(xs_training, ys_training, batch_size=20, epochs=10, verbose=1)
+        train_data = self.model.fit(np.array(xs), np.array(ys), batch_size=20, epochs=10, verbose=1, validation_split=0.2)
 
         validation_stats = self.model.evaluate(xs_validation, ys_validation)
         print(f"Validation accuracy: {validation_stats[1]}")
+
+        return train_data
 
     def answer(self, test):
         return self.model(test)

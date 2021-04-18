@@ -2,6 +2,7 @@
 This will be the main script for the actual evaluation/classification
 """
 import numpy as np
+import matplotlib.pyplot as plt
 from embedding import SentenceEmbedder
 from neural import Model
 
@@ -19,7 +20,34 @@ def main():
     print(sentence_embeddings)
 
     neural = Model()
-    neural.train(sentence_embeddings, labels)
+    train_data = neural.train(sentence_embeddings, labels)
+
+    print(train_data.history.keys())
+    plt.plot(train_data.history['accuracy'])
+    plt.plot(train_data.history['val_accuracy'])
+    plt.title('Train and Validation Accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'validation'], loc='upper right')
+    plt.savefig('accuracy.png')
+    plt.clf()
+
+    plt.plot(train_data.history['precision'])
+    plt.plot(train_data.history['val_precision'])
+    plt.title('Train and Validation Precision')
+    plt.ylabel('precision')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'validation'], loc='upper right')
+    plt.savefig('precision.png')
+    plt.clf()
+
+    plt.plot(train_data.history['recall'])
+    plt.plot(train_data.history['val_recall'])
+    plt.title('Train and Validation Recall')
+    plt.ylabel('recall')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'validation'], loc='upper right')
+    plt.savefig('recall.png')
 
 '''
     with open("test.txt", 'r') as test_file:
