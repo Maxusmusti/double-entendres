@@ -5,19 +5,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 from embedding import SentenceEmbedder
 from neural import Model
+from numpy import loadtxt
 
 def main():
-    with open("sentences.txt", 'r', encoding='UTF-8') as sentence_file:
-        sentences = [sentence.split('\t')[0] for sentence in sentence_file]
-    print(sentences)
+    sentence_embeddings = loadtxt('embeddings.csv', delimiter=',')
+
+    embedder = SentenceEmbedder()
+
+    # if you have the newest embeddings, comment out this part until ##########################
+    #
+    # with open("sentences.txt", 'r', encoding='UTF-8') as sentence_file:
+    #     sentences = [sentence.split('\t')[0] for sentence in sentence_file]
+    # print(sentences)
+    #
+    # sentence_embeddings = embedder.encode(sentences)
+    # print(sentence_embeddings)
+    #
+    ##########################
 
     with open("sentences.txt", 'r', encoding='UTF-8') as sentence_file:
         labels = [int((sentence.split('\t')[1])[0]) for sentence in sentence_file]
     print(labels)
-
-    embedder = SentenceEmbedder()
-    sentence_embeddings = embedder.encode(sentences)
-    print(sentence_embeddings)
 
     neural = Model()
     train_data = neural.train(sentence_embeddings, labels)
@@ -49,15 +57,15 @@ def main():
     plt.legend(['train', 'validation'], loc='upper right')
     plt.savefig('recall.png')
 
-'''
     with open("test.txt", 'r') as test_file:
         tests = [sentence[:-1] for sentence in test_file]
-        print(tests)
         test_embeddings = embedder.encode(tests)
-        print(test_embeddings)
-        for test in test_embeddings:
-            print(neural.answer(np.expand_dims(test, 0)))
-'''
+        for i in range(len(test_embeddings)):
+            emb = test_embeddings[i]
+            sentence = tests[i]
+            xs = np.array([emb])
+            double_entendre_probabilities = neural.predict(xs)
+            print(f"'{sentence}' is double entendre with probability {str(round(double_entendre_probabilities[0][0], 4))}")
     
 if __name__ == "__main__":
     main()

@@ -55,5 +55,5 @@ class Model:
 
         return train_data
 
-    def answer(self, test):
-        return self.model(test)
+    def predict(self, xs):
+        return self.model.predict(xs)
