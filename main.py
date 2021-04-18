@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from embedding import SentenceEmbedder
 from neural import Model
 from numpy import loadtxt
+from numpy import savetxt
 
 def main():
     sentence_embeddings = loadtxt('embeddings.csv', delimiter=',')
@@ -20,6 +21,7 @@ def main():
     #
     # sentence_embeddings = embedder.encode(sentences)
     # print(sentence_embeddings)
+    # savetxt('embeddings.csv', sentence_embeddings, delimiter=',')
     #
     ##########################
 
