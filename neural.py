@@ -5,6 +5,7 @@ This is the main file for building the neural networks
 import numpy as np
 import tensorflow as tf
 import random
+from keras import callbacks
 
 class Model:
 
@@ -38,6 +39,10 @@ class Model:
         print(f"{len(xs_training)} training examples")
         print(f"{len(xs_validation)} validation examples")
 
+        earlystopping = callbacks.EarlyStopping(monitor="val_loss",
+                                                mode="min", patience=5,
+                                                restore_best_weights=True)
+
         # train
         x_length = len(xs[0])
         self.model.add(tf.keras.layers.Dropout(0.2, input_shape=(x_length,)))
@@ -48,7 +53,7 @@ class Model:
 
         self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
         #self.model.fit(xs_training, ys_training, batch_size=20, epochs=10, verbose=1)
-        train_data = self.model.fit(np.array(xs), np.array(ys), batch_size=20, epochs=10, verbose=1, validation_split=0.2)
+        train_data = self.model.fit(np.array(xs), np.array(ys), batch_size=64, epochs=25, verbose=1, validation_split=0.2, callbacks =[earlystopping])
 
         validation_stats = self.model.evaluate(xs_validation, ys_validation)
         print(f"Validation accuracy: {validation_stats[1]}")
