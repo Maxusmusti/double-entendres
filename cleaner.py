@@ -1,5 +1,9 @@
 import re
 
+"""
+Main script for reformatting sentences.txt to work with neural network/reformatting TWSS tweets
+"""
+
 #my_set = set(open('double_entendres.txt'))
 
 """
