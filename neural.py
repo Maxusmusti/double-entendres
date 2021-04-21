@@ -52,11 +52,12 @@ class Model:
         self.model.add(tf.keras.layers.Dense(1, activation="sigmoid", kernel_initializer='normal'))
 
         self.model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
-        #self.model.fit(xs_training, ys_training, batch_size=20, epochs=10, verbose=1)
+
+        # Early stopping to learn epoh limit
         train_data = self.model.fit(np.array(xs), np.array(ys), batch_size=64, epochs=25, verbose=1, validation_split=0.2, callbacks =[earlystopping])
 
-        validation_stats = self.model.evaluate(xs_validation, ys_validation)
-        print(f"Validation accuracy: {validation_stats[1]}")
+        # No epoch limit
+        ###train_data = self.model.fit(np.array(xs), np.array(ys), batch_size=64, epochs=12, verbose=1, validation_split=0.2)
 
         return train_data
 

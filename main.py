@@ -9,25 +9,32 @@ from numpy import loadtxt
 from numpy import savetxt
 
 def main():
-    sentence_embeddings = loadtxt('embeddings.csv', delimiter=',')
-
     embedder = SentenceEmbedder()
 
-    # if you have the newest embeddings, comment out this part until ##########################
-    #
-    # with open("sentences.txt", 'r', encoding='UTF-8') as sentence_file:
-    #     sentences = [sentence.split('\t')[0] for sentence in sentence_file]
-    # print(sentences)
-    #
-    # sentence_embeddings = embedder.encode(sentences)
-    # print(sentence_embeddings)
-    # savetxt('embeddings.csv', sentence_embeddings, delimiter=',')
-    #
-    ##########################
+    # Comment below part out if newest embeddings have already been generated
+    with open("sentences.txt", 'r', encoding='UTF-8') as sentence_file:
+        sentences = [sentence.split('\t')[0] for sentence in sentence_file]
+    print(sentences)
+
+    sentence_embeddings = embedder.encode(sentences)
+    print(sentence_embeddings)
+    savetxt('embeddings.csv', sentence_embeddings, delimiter=',')
+
+    # Uncomment below line if newest embeddings have already been generated
+    #sentence_embeddings = loadtxt('embeddings.csv', delimiter=',')
 
     with open("sentences.txt", 'r', encoding='UTF-8') as sentence_file:
         labels = [int((sentence.split('\t')[1])[0]) for sentence in sentence_file]
     print(labels)
+
+    # AREA TO MESS WITH FEATURE REMOVAL
+    """
+    print(len(sentence_embeddings[0]))
+    sentence_embeddings = np.delete(sentence_embeddings, len(sentence_embeddings[0]) - 1, 1)
+    #sentence_embeddings = np.delete(sentence_embeddings, len(sentence_embeddings[0]) - 1, 1)
+    #sentence_embeddings = np.delete(sentence_embeddings, len(sentence_embeddings[0]) - 1, 1)
+    print(len(sentence_embeddings[0]))
+    """
 
     neural = Model()
     train_data = neural.train(sentence_embeddings, labels)
@@ -68,6 +75,6 @@ def main():
             xs = np.array([emb])
             double_entendre_probabilities = neural.predict(xs)
             print(f"'{sentence}' is double entendre with probability {str(round(double_entendre_probabilities[0][0], 4))}")
-    
+
 if __name__ == "__main__":
     main()
