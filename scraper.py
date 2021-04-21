@@ -1,6 +1,10 @@
 import lyricsgenius
 import re
 
+"""
+Main script for retrieving lyrics from Genius
+"""
+
 
 token = "NM2L7vKO3vF48dW69gx2sOGiJOHUZI8Y_vbFSzmgdc2GLSKBY8EnUwc1DJNd3vID"
 genius = lyricsgenius.Genius(token)
