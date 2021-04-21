@@ -4,3 +4,4 @@ nltk
 numpy
 tensorflow
 matplotlib
+lyricsgenius
