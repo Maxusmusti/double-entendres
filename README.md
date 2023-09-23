@@ -1,5 +1,5 @@
 # double-entendres
-Detecting double-entendres in natural language using WordNet for enhanced feature embeddings with NNs
+Detecting double-entendres in natural language by using WordNet and SentenceTransformers to generate enhanced feature embeddings for NNs
 
 Instructions:
  - `pip install -r requirements.txt`
